@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FunctionHandler
 {
-    public static class LambdaStreamConverter
+    internal static class LambdaStreamConverter
     {
         public static HttpRequestMessage GetRequestMessage(Stream inputStream)
         {
