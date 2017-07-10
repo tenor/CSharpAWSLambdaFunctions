@@ -26,14 +26,14 @@ namespace FunctionHandler
 
             //Locate Run method
             var type = dotNetFunctionAsm.GetType("Function", true);
-            //var instance = Activator.CreateInstance(type);
+            var instance = Activator.CreateInstance(type);
             var method = type.GetMethod("Run");
 
             //Execute function
             Object result;
             try
             {
-                result = method.Invoke(null /* instance is ignored for a static Run method */, new object[] { requestMsg });
+                result = method.Invoke(instance, new object[] { requestMsg });
             }
             catch(TargetInvocationException ex)
             {
