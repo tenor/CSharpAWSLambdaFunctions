@@ -21,9 +21,8 @@ namespace FunctionHandler
             var asmLoadCtx = System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(functionHandlerAsm);
             Assembly dotNetFunctionAsm = asmLoadCtx.LoadFromAssemblyPath(functionPath);
 
-            //TODO: Read inputStream into HttpRequestMessage
-
-            var requestMsg = new HttpRequestMessage();
+            //Read inputStream into HttpRequestMessage
+            var requestMsg = LambdaStreamConverter.GetRequestMessage(inputStream);
 
             //Locate Run method
             var type = dotNetFunctionAsm.GetType("Function", true);
