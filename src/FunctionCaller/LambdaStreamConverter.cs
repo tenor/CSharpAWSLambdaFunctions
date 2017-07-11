@@ -184,32 +184,7 @@ namespace FunctionHandler
                 respObj.Add("headers", headers);
             }
 
-            if (isBase64Encoded || String.IsNullOrWhiteSpace(body))
-            {
-                respObj.Add("body", body);
-            }
-            else
-            {
-                //check if the body itself is JSON
-                object deserialized = null;
-                try
-                {
-                    deserialized = JsonConvert.DeserializeObject(body);
-                }
-                catch
-                {
-                    deserialized = null;
-                }
-
-                if (deserialized != null && deserialized is JToken)
-                {
-                    respObj.Add("body", deserialized as JToken);
-                }
-                else
-                {
-                    respObj.Add("body", body);
-                }
-            }
+            respObj.Add("body", body);
 
             return respObj.ToString();
         }
