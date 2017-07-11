@@ -47,7 +47,7 @@ namespace FunctionHandler
                 }
             }
 
-            if (result == null)
+            if (result == null || result.GetType() == typeof(Task))
             {
                 //If result of call is null, present empty HttpResponseMessage
                 result = new HttpResponseMessage();
@@ -60,13 +60,9 @@ namespace FunctionHandler
                 result = ((Task<HttpResponseMessage>)result).Result;
             }
 
-            //TODO: Parse result into result stream
-
-            var resp = "{  \"isBase64Encoded\": false, \"statusCode\": 200, \"body\": \"" + (result as HttpResponseMessage).Content.ReadAsStringAsync().Result + "\" }";
-
-            return new MemoryStream(System.Text.Encoding.UTF8.GetBytes(resp));
-
-
+            //Return result stream
+            var respString = LambdaStreamConverter.GetResponseString((result as HttpResponseMessage) ?? new HttpResponseMessage());
+            return new MemoryStream(System.Text.Encoding.UTF8.GetBytes(respString));
         }
     }
 }
