@@ -28,6 +28,7 @@ namespace PackageBuilder
                     , MetadataReference.CreateFromFile(typeof(System.Xml.Linq.XDocument).GetTypeInfo().Assembly.Location) //Import XDocument
                     , MetadataReference.CreateFromFile(typeof(System.Net.Http.HttpRequestMessage).GetTypeInfo().Assembly.Location)
                     , MetadataReference.CreateFromFile(typeof(System.Net.HttpStatusCode).GetTypeInfo().Assembly.Location)
+                    , MetadataReference.CreateFromFile(typeof(System.Uri).GetTypeInfo().Assembly.Location)
                     , MetadataReference.CreateFromFile(typeof(Newtonsoft.Json.JsonConvert).GetTypeInfo().Assembly.Location)
                     )
                 .AddSyntaxTrees(tree);
