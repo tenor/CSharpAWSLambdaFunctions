@@ -38,7 +38,7 @@
     }
 
 <pre>
-<code class="codepad language-csharp" data-codepad="theme:crimson_editor" style="width:100%;height:400px;">@Html.Raw(Model.Code)</code>
+<code class="codepad language-csharp" data-codepad="theme:crimson_editor" style="width:100%;height:400px;">@Html.Raw(Model.Code.Replace("<", "&lt;").Replace(">", "&gt;"))</code>
 </pre>
 
     <a class="download-btn action-btn">Download Package</a>

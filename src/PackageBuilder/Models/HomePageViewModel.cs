@@ -32,13 +32,13 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 
-public static async Task&lt;HttpResponseMessage&gt; Run(HttpRequestMessage req)
+public static async Task<HttpResponseMessage> Run(HttpRequestMessage req)
 {
     return new HttpResponseMessage
     {
         Content = new StringContent(
-            JsonConvert.SerializeObject(new { greeting = ""Hello World!""})
-            )
+            JsonConvert.SerializeObject(new { greeting = ""Hello World!"", uri = req.RequestUri })
+        )
     };
 }";
         }
