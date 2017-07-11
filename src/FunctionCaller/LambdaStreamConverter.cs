@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 
@@ -134,6 +135,104 @@ namespace FunctionHandler
             }
 
             return req;
+        }
+
+        public static string GetResponseString(HttpResponseMessage message)
+        {
+            bool isBase64Encoded;
+            string body = GetJsonFriendlyContent(message.Content, out isBase64Encoded);
+
+            JObject respObj = new JObject(
+                new JProperty("isBase64Encoded", isBase64Encoded),
+                new JProperty("statusCode", (int)message.StatusCode)
+                );
+
+            JObject headers = new JObject();
+
+            //Add response headers
+            if (message.Headers != null)
+            {
+                foreach (var h in message.Headers)
+                {
+                    if (!String.IsNullOrWhiteSpace(h.Key))
+                    {
+                        var hVal = String.Empty;
+                        if (h.Value != null && h.Value.Any()) hVal = h.Value.First();
+                        headers.Add(h.Key, hVal);
+                    }
+                }
+            }
+
+            //Add content headers
+            if (message.Content != null && message.Content.Headers != null)
+            {
+                //TODO: Consider decoding content body based on content headers
+
+                foreach (var h in message.Content.Headers)
+                {
+                    if (!String.IsNullOrWhiteSpace(h.Key))
+                    {
+                        var hVal = String.Empty;
+                        if (h.Value != null && h.Value.Any()) hVal = h.Value.First();
+                        headers.Add(h.Key, hVal);
+                    }
+                }
+            }
+
+            if (headers.HasValues)
+            {
+                respObj.Add("headers", headers);
+            }
+
+            if (isBase64Encoded || String.IsNullOrWhiteSpace(body))
+            {
+                respObj.Add("body", body);
+            }
+            else
+            {
+                //check if the body itself is JSON
+                object deserialized = null;
+                try
+                {
+                    deserialized = JsonConvert.DeserializeObject(body);
+                }
+                catch
+                {
+                    deserialized = null;
+                }
+
+                if (deserialized != null && deserialized is JToken)
+                {
+                    respObj.Add("body", deserialized as JToken);
+                }
+                else
+                {
+                    respObj.Add("body", body);
+                }
+            }
+
+            return respObj.ToString();
+        }
+
+        static string GetJsonFriendlyContent(HttpContent content, out bool isBase64Encoded)
+        {
+            isBase64Encoded = false;
+            if (content == null) return String.Empty;
+
+            var bytes = content.ReadAsByteArrayAsync().Result;
+            if (bytes.Length == 0) return String.Empty;
+
+            //Attempt to read bytes as a UTF8 string
+            try
+            {
+                return System.Text.Encoding.UTF8.GetString(bytes);
+            }
+            catch { }
+
+            //Attempt failed
+            //Return string as Base64Encoded string
+            isBase64Encoded = true;
+            return System.Convert.ToBase64String(bytes);
         }
     }
 }
