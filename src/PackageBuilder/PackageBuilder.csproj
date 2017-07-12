@@ -31,5 +31,10 @@
   <ItemGroup>
     <Folder Include="AppData\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="AppData\ZipTemplate.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
