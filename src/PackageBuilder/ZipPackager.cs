@@ -8,7 +8,7 @@ namespace PackageBuilder
     public class ZipPackager
     {
         readonly IHostingEnvironment env;
-        const string ZIP_TEMPLATE_FOLDER = "AppData";
+        const string APP_DATA_FOLDER = "AppData";
         const string ZIP_TEMPLATE_FILE = "ZipTemplate.zip";
         const string FUNCTION_ZIP_FOLDER = "DotNetFunction";
         public ZipPackager(IHostingEnvironment env)
@@ -20,7 +20,7 @@ namespace PackageBuilder
         {
             //Load ZipTemplate file into Zip Stream
 
-            string zipFilePath = Path.Combine(env.ContentRootPath, ZIP_TEMPLATE_FOLDER, ZIP_TEMPLATE_FILE);
+            string zipFilePath = Path.Combine(env.ContentRootPath, APP_DATA_FOLDER, ZIP_TEMPLATE_FILE);
 
             using (MemoryStream ms = new MemoryStream())
             {
