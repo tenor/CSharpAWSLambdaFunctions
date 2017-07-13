@@ -21,7 +21,7 @@ namespace PackageBuilder
             return tempdata[key];
         }
 
-        public string Store(object value)
+        public string Store(string value)
         {
             var key = Guid.NewGuid().ToString("N");
             tempdata[key] = value;

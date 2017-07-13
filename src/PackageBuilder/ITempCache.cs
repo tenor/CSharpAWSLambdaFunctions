@@ -4,6 +4,6 @@
     {
         object Get(string key);
         object Peek(string key);
-        string Store(object value);
+        string Store(string value);
     }
 }
