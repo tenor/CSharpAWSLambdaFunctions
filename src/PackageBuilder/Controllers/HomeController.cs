@@ -73,7 +73,8 @@ namespace PackageBuilder.Controllers
 
         ITempCache GetFileCache()
         {
-            return new TempDataCache(TempData);
+            //return new TempDataCache(TempData);
+            return new FileCache(env, TimeSpan.FromMinutes(10));
         }
     }
 }
