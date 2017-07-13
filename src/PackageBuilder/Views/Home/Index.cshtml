@@ -11,6 +11,13 @@
     }
 }
 
+@if(Context.Request.Headers["User-Agent"].Any( a => a.IndexOf("Edge/") >= 0 || a.IndexOf("Trident/") >= 0 || a.IndexOf("MSIE ") >= 0))
+{
+    <div style="background-color:wheat;color:red;font-size:20px;">
+        There is currently a <a href="https://github.com/tenor/CSharpAWSLambdaFunctions/issues/1" target="_blank">download issue</a> with Internet Explorer. Please use a different browser to access this site.
+    </div>
+}
+
 <div id="createPackage" @Html.Raw(createPackageDivStyle) >
 
     <div class="instructions">
